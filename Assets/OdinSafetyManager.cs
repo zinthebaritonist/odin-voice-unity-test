@@ -1,5 +1,6 @@
 using UnityEngine;
 using OdinNative.Unity;
+using OdinNative.Unity.Audio;
 
 public class OdinSafetyManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class OdinSafetyManager : MonoBehaviour
     void Start()
     {
         // Log all existing OdinHandler instances
-        var handlers = FindObjectsOfType<OdinHandler>();
+        var handlers = FindObjectsByType<OdinHandler>(FindObjectsSortMode.None);
         Debug.Log($"[OdinSafetyManager] Found {handlers.Length} OdinHandler instances");
 
         if (handlers.Length == 0)
@@ -57,18 +58,25 @@ public class OdinSafetyManager : MonoBehaviour
         Debug.LogError("[OdinSafetyManager] Too many ODIN errors detected - disabling ODIN components");
 
         // Find and disable all ODIN related components
-        var handlers = FindObjectsOfType<OdinHandler>();
+        var handlers = FindObjectsByType<OdinHandler>(FindObjectsSortMode.None);
         foreach (var handler in handlers)
         {
             handler.enabled = false;
             Debug.Log($"[OdinSafetyManager] Disabled OdinHandler: {handler.name}");
         }
 
-        var microphones = FindObjectsOfType<MicrophoneReader>();
-        foreach (var mic in microphones)
+        try
         {
-            mic.enabled = false;
-            Debug.Log($"[OdinSafetyManager] Disabled MicrophoneReader: {mic.name}");
+            var microphones = FindObjectsByType<MicrophoneReader>(FindObjectsSortMode.None);
+            foreach (var mic in microphones)
+            {
+                mic.enabled = false;
+                Debug.Log($"[OdinSafetyManager] Disabled MicrophoneReader: {mic.name}");
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"[OdinSafetyManager] Could not access MicrophoneReader: {e.Message}");
         }
 
         Debug.LogWarning("[OdinSafetyManager] ODIN disabled - application running in safe mode");
