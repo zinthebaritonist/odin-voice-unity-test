@@ -72,5 +72,6 @@ crashlytics-build.properties
 .DS_Store
 
 # ODIN Access Token (セキュリティのため)
-# ※トークンはREADMEに記載する
-OdinRoomConnector.cs.meta
+.env
+*.env
+config/odin.json
