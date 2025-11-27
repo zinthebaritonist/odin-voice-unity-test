@@ -178,26 +178,29 @@ public class OdinDebugUI : MonoBehaviour
 
         InitializeStyles();
 
-        // 画面サイズに応じてウィンドウサイズを調整
-        float screenWidth = Screen.width;
-        float screenHeight = Screen.height;
-
-        // ウィンドウサイズを画面の90%に制限
-        float windowWidth = Mathf.Min(450, screenWidth * 0.9f);
-        float windowHeight = Mathf.Min(600, screenHeight * 0.9f);
+        // 固定サイズのウィンドウ（画面サイズに関係なく）
+        float windowWidth = 450;
+        float windowHeight = 600;
         float padding = 10;
 
-        // スクロール可能なエリアとして全体をラップ
-        scrollPosition = GUI.BeginScrollView(
-            new Rect(padding, padding, windowWidth, windowHeight),
-            scrollPosition,
-            new Rect(0, 0, windowWidth - 30, windowHeight * 1.2f)
-        );
+        // 画面が小さい場合のみサイズを調整
+        if (Screen.width < windowWidth + padding * 2)
+        {
+            windowWidth = Screen.width - padding * 2;
+        }
+        if (Screen.height < windowHeight + padding * 2)
+        {
+            windowHeight = Screen.height - padding * 2;
+        }
 
-        GUILayout.BeginVertical();
+        // 固定位置にウィンドウを配置
+        GUILayout.BeginArea(new Rect(padding, padding, windowWidth, windowHeight));
+
+        // 内部コンテンツ用のスクロールビュー
+        scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
         // タイトル
-        GUILayout.Box("🎤 ODIN Voice Chat Debug Panel", boxStyle, GUILayout.Width(windowWidth - 20));
+        GUILayout.Box("🎤 ODIN Voice Chat Debug Panel", boxStyle);
 
         // 接続状態セクション
         GUILayout.BeginVertical(boxStyle);
@@ -308,7 +311,7 @@ public class OdinDebugUI : MonoBehaviour
 
         foreach (string log in logMessages)
         {
-            GUILayout.Label(log, GUILayout.Width(windowWidth - 50));
+            GUILayout.Label(log);
         }
 
         GUILayout.EndScrollView();
@@ -317,8 +320,8 @@ public class OdinDebugUI : MonoBehaviour
         // ヘルプテキスト
         GUILayout.Label("Press TAB to toggle this panel", labelStyle);
 
-        GUILayout.EndVertical();
-        GUI.EndScrollView();
+        GUILayout.EndScrollView();
+        GUILayout.EndArea();
     }
 
     void InitializeStyles()
