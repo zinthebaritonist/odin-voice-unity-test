@@ -30,7 +30,7 @@ namespace OdinVoiceChat.Core
                 Debug.Log($"[SimpleOdinManager] Attempting to join room: {roomName}");
 
                 // Set up event listeners before joining
-                OdinHandler.Instance.OnRoomJoined.AddListener((sender, args) => OnRoomJoinedHandler(sender, args));
+                OdinHandler.Instance.OnRoomJoined.AddListener(args => OnRoomJoinedHandler(this, args));
                 OdinHandler.Instance.OnPeerJoined.AddListener((sender, args) => OnPeerJoinedHandler(sender, args));
 
                 // Join the room with the access token
