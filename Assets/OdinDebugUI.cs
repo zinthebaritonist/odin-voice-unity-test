@@ -23,7 +23,7 @@ public class OdinDebugUI : MonoBehaviour
 
     // 音声レベル
     private float inputLevel = 0f;
-    private float outputLevel = 0f;
+    // private float outputLevel = 0f; // 未使用のため一時的にコメントアウト
     private Dictionary<ulong, float> peerAudioLevels = new Dictionary<ulong, float>();
 
     // UIスタイル
@@ -69,7 +69,7 @@ public class OdinDebugUI : MonoBehaviour
                 AddLog($"✅ Joined room: {currentRoom}");
             });
 
-            OdinHandler.Instance.OnRoomLeft.AddListener(() =>
+            OdinHandler.Instance.OnRoomLeft.AddListener((args) =>
             {
                 connectionStatus = "Disconnected";
                 currentRoom = "";
@@ -87,11 +87,11 @@ public class OdinDebugUI : MonoBehaviour
             OdinHandler.Instance.OnPeerLeft.AddListener((sender, args) =>
             {
                 connectedPeers--;
-                if (peerAudioLevels.ContainsKey(args.Peer.Id))
+                if (peerAudioLevels.ContainsKey(args.PeerId))
                 {
-                    peerAudioLevels.Remove(args.Peer.Id);
+                    peerAudioLevels.Remove(args.PeerId);
                 }
-                AddLog($"👤 Peer left: {args.Peer.Id} (Total: {connectedPeers})");
+                AddLog($"👤 Peer left: {args.PeerId} (Total: {connectedPeers})");
             });
 
             OdinHandler.Instance.OnMediaAdded.AddListener((sender, args) =>
@@ -101,7 +101,7 @@ public class OdinDebugUI : MonoBehaviour
 
             OdinHandler.Instance.OnMediaRemoved.AddListener((sender, args) =>
             {
-                AddLog($"🔇 Media removed from peer: {args.PeerId}");
+                AddLog($"🔇 Media removed from peer: {args.MediaStreamId}");
             });
         }
     }
@@ -117,7 +117,8 @@ public class OdinDebugUI : MonoBehaviour
             if (OdinHandler.Instance != null && OdinHandler.Instance.Microphone != null)
             {
                 OdinHandler.Instance.Microphone.StopListen();
-                OdinHandler.Instance.Microphone.MicrophoneName = currentMicrophone;
+                // Unity標準のマイクデバイスを切り替え
+                OdinHandler.Instance.Microphone.CustomMicrophoneDevice = currentMicrophone;
                 OdinHandler.Instance.Microphone.StartListen();
                 AddLog($"🎤 Switched to microphone: {currentMicrophone}");
             }
@@ -151,7 +152,8 @@ public class OdinDebugUI : MonoBehaviour
             // 簡易的な音声レベル計算
             inputLevel = Mathf.Lerp(inputLevel, 0f, Time.deltaTime * 5f);
 
-            if (OdinHandler.Instance.Microphone.IsRecording)
+            // マイクが動作中かチェック
+            if (Microphone.IsRecording(currentMicrophone))
             {
                 // ダミーの音声レベル表示（実際の実装では音声データから計算）
                 inputLevel = Mathf.PingPong(Time.time * 0.5f, 1f) * 0.3f;
@@ -229,12 +231,12 @@ public class OdinDebugUI : MonoBehaviour
         DrawAudioLevelBar(inputLevel, Color.green);
 
         // ミュートボタン
-        bool isMuted = OdinHandler.Instance?.Microphone?.IsMuted ?? false;
+        bool isMuted = OdinHandler.Instance?.Microphone?.Muted ?? false;
         if (GUILayout.Button(isMuted ? "🔇 Unmute" : "🔊 Mute", buttonStyle))
         {
             if (OdinHandler.Instance?.Microphone != null)
             {
-                OdinHandler.Instance.Microphone.IsMuted = !isMuted;
+                OdinHandler.Instance.Microphone.Muted = !isMuted;
                 AddLog(isMuted ? "Microphone unmuted" : "Microphone muted");
             }
         }
@@ -350,9 +352,9 @@ public class OdinDebugUI : MonoBehaviour
     {
         AddLog("Disconnecting from room...");
 
-        if (OdinHandler.Instance != null)
+        if (OdinHandler.Instance != null && !string.IsNullOrEmpty(currentRoom))
         {
-            OdinHandler.Instance.LeaveRoom();
+            OdinHandler.Instance.LeaveRoom(currentRoom);
         }
     }
 }
