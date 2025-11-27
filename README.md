@@ -34,7 +34,8 @@ cd odin-voice-unity-test
 1. Unity Hub → 「追加」ボタン
 2. クローンしたフォルダを選択
 3. Unity 6 (6000.0.62f1) を選択して開く
-4. **初回起動時**: ODIN パッケージが自動的にダウンロードされます（約30秒）
+4. **初回起動時**: ODIN パッケージが Git から自動的にダウンロードされます（約1-2分）
+   - Package Manager が自動的に `https://github.com/4Players/odin-sdk-unity.git` からインストール
 
 #### 3. ODINアクセストークン取得と設定
 
