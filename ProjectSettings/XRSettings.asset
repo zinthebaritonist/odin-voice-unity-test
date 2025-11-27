@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  m_StandardAssetsSubFolder:
+  XR:
+    m_Enabled: 1
+    m_Devices:
+    - OpenXR
+    - Oculus
+  OpenXR:
+    m_Features:
+    - com.unity.openxr.feature.oculusquest
+    - com.unity.openxr.feature.metaquest
+    m_RenderMode: SinglePassInstanced
+  VirtualRealitySupported: 1
+  m_StereoRenderingPath: 2
+  AndroidTargetArchitectures: 8
+  AndroidSplashScreenScale: 0
+  AndroidKeystoreName:
+  AndroidKeyaliasName:
+  AndroidEnableArmv9SecurityFeatures: 0
+  AndroidBuildApkPerCpuArchitecture: 0
+  AndroidTVCompatibility: 0
+  AndroidIsGame: 1
+  AndroidEnableTango: 0
+  androidEnableBanner: 1
+  androidUseLowAccuracyLocation: 0
+  androidUseCustomKeystore: 0

@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "com.unity.inputsystem": "1.11.2",
+    "com.unity.ugui": "2.0.0",
+    "com.unity.xr.core-utils": "2.5.3",
+    "com.unity.xr.interaction.toolkit": "3.3.0",
+    "com.unity.xr.oculus": "4.5.2",
+    "com.unity.xr.openxr": "1.16.0",
+    "io.fourplayers.odin": "file:/Users/zin/Downloads/odin-v1.7.4_tarballpackage.tgz",
+    "com.unity.modules.androidjni": "1.0.0"
+  },
+  "scopedRegistries": []
+}
