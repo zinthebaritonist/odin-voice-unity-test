@@ -13,7 +13,7 @@ public class SimpleOdinTest : MonoBehaviour
         Debug.Log($"Token: {accessToken.Substring(0, 10)}...");
 
         // Try to find ODIN components
-        var odinComponents = FindObjectsOfType<MonoBehaviour>();
+        var odinComponents = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
         foreach (var comp in odinComponents)
         {
             if (comp.GetType().Name.Contains("Odin"))

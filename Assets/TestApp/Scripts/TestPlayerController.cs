@@ -135,7 +135,7 @@ namespace OdinVoiceChat.Test
 
             if (isXRPlayer)
             {
-                _xrController = GameObject.FindObjectOfType<XRVoiceController>();
+                _xrController = GameObject.FindFirstObjectByType<XRVoiceController>();
                 if (_xrController == null)
                 {
                     GameObject xrControllerObj = new GameObject("XRVoiceController");

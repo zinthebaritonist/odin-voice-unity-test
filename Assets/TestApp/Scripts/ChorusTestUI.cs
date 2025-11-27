@@ -420,7 +420,7 @@ namespace OdinVoiceChat.Test
 
         private void OnXRModeChanged(bool enabled)
         {
-            var xrController = GameObject.FindObjectOfType<XRVoiceController>();
+            var xrController = GameObject.FindFirstObjectByType<XRVoiceController>();
             if (xrController != null)
             {
                 xrController.SetXRMode(enabled);
@@ -429,7 +429,7 @@ namespace OdinVoiceChat.Test
 
         private void OnPushToTalkChanged(bool enabled)
         {
-            var xrController = GameObject.FindObjectOfType<XRVoiceController>();
+            var xrController = GameObject.FindFirstObjectByType<XRVoiceController>();
             if (xrController != null)
             {
                 xrController.TogglePushToTalk();
@@ -455,7 +455,7 @@ namespace OdinVoiceChat.Test
 
         private void OnRecenterClicked()
         {
-            var xrController = GameObject.FindObjectOfType<XRVoiceController>();
+            var xrController = GameObject.FindFirstObjectByType<XRVoiceController>();
             xrController?.RecenterView();
         }
 

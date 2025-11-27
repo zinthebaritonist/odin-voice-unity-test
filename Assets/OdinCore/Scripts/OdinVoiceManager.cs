@@ -33,6 +33,9 @@ namespace OdinVoiceChat.Core
         [Header("ODIN Configuration")]
         [SerializeField] private string accessToken = "";
         [SerializeField] private string gateway = "gateway.odin.4players.io";
+        #pragma warning disable CS0414
+        [SerializeField] private bool useGateway = false;
+        #pragma warning restore CS0414
         [SerializeField] private string roomName = "ChorusRoom";
         [SerializeField] private bool autoJoinRoom = true;
 
@@ -53,7 +56,9 @@ namespace OdinVoiceChat.Core
 
         private OdinClient _odinClient;
         private Room _currentRoom;
+        #pragma warning disable CS0414
         private MediaStream _microphoneStream;
+        #pragma warning restore CS0414
         private Dictionary<ulong, OdinPlayerVoice> _playerVoices = new Dictionary<ulong, OdinPlayerVoice>();
 
         public event Action<ulong, string> OnPeerJoined;
@@ -84,8 +89,8 @@ namespace OdinVoiceChat.Core
         {
             try
             {
-                OdinHandler.Instance.OnRoomJoined.AddListener((sender, args) => HandleRoomJoined(args));
-                OdinHandler.Instance.OnRoomLeft.AddListener((sender, args) => HandleRoomLeft(args));
+                OdinHandler.Instance.OnRoomJoined.AddListener(args => HandleRoomJoined(args));
+                OdinHandler.Instance.OnRoomLeft.AddListener(args => HandleRoomLeft(args));
                 OdinHandler.Instance.OnPeerJoined.AddListener((sender, args) => HandlePeerJoined(args));
                 OdinHandler.Instance.OnPeerLeft.AddListener((sender, args) => HandlePeerLeft(args));
                 OdinHandler.Instance.OnMediaAdded.AddListener((sender, args) => HandleMediaAdded(args));

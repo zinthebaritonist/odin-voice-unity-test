@@ -13,9 +13,15 @@ namespace OdinVoiceChat.XR
     public class XRVoiceController : MonoBehaviour
     {
         [Header("XR Configuration")]
+        #pragma warning disable CS0414
         [SerializeField] private bool autoDetectXRDevice = true;
+        #pragma warning restore CS0414
+        #pragma warning disable CS0414
         [SerializeField] private XRNode primaryControllerNode = XRNode.RightHand;
+        #pragma warning restore CS0414
+        #pragma warning disable CS0414
         [SerializeField] private XRNode secondaryControllerNode = XRNode.LeftHand;
+        #pragma warning restore CS0414
 
         [Header("Voice Controls")]
         [SerializeField] private bool pushToTalk = false;
@@ -25,7 +31,9 @@ namespace OdinVoiceChat.XR
 
         [Header("Quest Optimization")]
         [SerializeField] private bool enableQuestOptimization = true;
+        #pragma warning disable CS0414
         [SerializeField] private bool useFoveatedRendering = true;
+        #pragma warning restore CS0414
         [SerializeField] private int targetFrameRate = 72;
 
         [Header("Hand Tracking")]
@@ -83,7 +91,7 @@ namespace OdinVoiceChat.XR
 
         private void SetupXRComponents()
         {
-            _xrOrigin = GameObject.FindObjectOfType<XROrigin>();
+            _xrOrigin = GameObject.FindFirstObjectByType<XROrigin>();
             if (_xrOrigin == null && _isInXR)
             {
                 GameObject rigObject = new GameObject("XR Origin");

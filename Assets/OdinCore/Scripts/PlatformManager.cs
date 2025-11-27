@@ -53,7 +53,9 @@ namespace OdinVoiceChat
         [SerializeField] private int targetFrameRate = 60;
         [SerializeField] private int audioSampleRate = 48000;
         [SerializeField] private int audioBufferSize = 512;
+        #pragma warning disable CS0414
         [SerializeField] private bool useMultithreading = true;
+        #pragma warning restore CS0414
 
         [Header("Graphics Settings")]
         [SerializeField] private RenderPipelineAsset pcRenderPipeline;

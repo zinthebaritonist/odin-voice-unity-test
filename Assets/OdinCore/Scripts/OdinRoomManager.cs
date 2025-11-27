@@ -30,7 +30,9 @@ namespace OdinVoiceChat.Core
         [Header("Room Configuration")]
         [SerializeField] private int maxPlayersPerRoom = 4;
         [SerializeField] private string roomPrefix = "Chorus_";
+        #pragma warning disable CS0414
         [SerializeField] private bool autoCreateRoom = true;
+        #pragma warning restore CS0414
         [SerializeField] private bool allowDynamicRoomCreation = true;
 
         [Header("Sync Settings")]

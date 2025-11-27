@@ -40,13 +40,19 @@ namespace OdinVoiceChat.Core
 
         [Header("Audio Processing")]
         [SerializeField] private bool enableCompression = true;
+        #pragma warning disable CS0414
         [SerializeField] private bool enableEQ = false;
+        #pragma warning restore CS0414
         [SerializeField] private bool enableReverb = false;
         [SerializeField] private float reverbAmount = 0.2f;
 
         [Header("Platform Specific")]
+        #pragma warning disable CS0414
         [SerializeField] private bool useQuestOptimization = false;
+        #pragma warning restore CS0414
+        #pragma warning disable CS0414
         [SerializeField] private int questSampleRate = 48000;
+        #pragma warning restore CS0414
         [SerializeField] private int pcSampleRate = 48000;
 
         private Dictionary<ulong, AudioSourcePair> _playerAudioSources = new Dictionary<ulong, AudioSourcePair>();
