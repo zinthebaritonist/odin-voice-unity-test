@@ -1,5 +1,6 @@
 using UnityEngine;
 using OdinNative.Unity;
+using OdinNative.Unity.Events;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -23,7 +24,6 @@ public class OdinDebugUI : MonoBehaviour
 
     // 音声レベル
     private float inputLevel = 0f;
-    // private float outputLevel = 0f; // 未使用のため一時的にコメントアウト
     private Dictionary<ulong, float> peerAudioLevels = new Dictionary<ulong, float>();
 
     // UIスタイル
@@ -75,7 +75,7 @@ public class OdinDebugUI : MonoBehaviour
                 currentRoom = "";
                 connectedPeers = 0;
                 peerAudioLevels.Clear();
-                AddLog("❌ Left room");
+                AddLog($"❌ Left room: {args.RoomName}");
             });
 
             OdinHandler.Instance.OnPeerJoined.AddListener((sender, args) =>
@@ -87,11 +87,13 @@ public class OdinDebugUI : MonoBehaviour
             OdinHandler.Instance.OnPeerLeft.AddListener((sender, args) =>
             {
                 connectedPeers--;
-                if (peerAudioLevels.ContainsKey(args.PeerId))
+                // PeerLeftEventArgsの正しいプロパティを使用
+                var peerId = args.Peer?.Id ?? 0;
+                if (peerAudioLevels.ContainsKey(peerId))
                 {
-                    peerAudioLevels.Remove(args.PeerId);
+                    peerAudioLevels.Remove(peerId);
                 }
-                AddLog($"👤 Peer left: {args.PeerId} (Total: {connectedPeers})");
+                AddLog($"👤 Peer left: {peerId} (Total: {connectedPeers})");
             });
 
             OdinHandler.Instance.OnMediaAdded.AddListener((sender, args) =>
@@ -101,7 +103,8 @@ public class OdinDebugUI : MonoBehaviour
 
             OdinHandler.Instance.OnMediaRemoved.AddListener((sender, args) =>
             {
-                AddLog($"🔇 Media removed from peer: {args.MediaStreamId}");
+                // MediaStreamIdを使用
+                AddLog($"🔇 Media removed - Stream ID: {args.MediaStreamId}");
             });
         }
     }
@@ -117,7 +120,7 @@ public class OdinDebugUI : MonoBehaviour
             if (OdinHandler.Instance != null && OdinHandler.Instance.Microphone != null)
             {
                 OdinHandler.Instance.Microphone.StopListen();
-                // Unity標準のマイクデバイスを切り替え
+                // CustomMicrophoneDeviceプロパティを使用
                 OdinHandler.Instance.Microphone.CustomMicrophoneDevice = currentMicrophone;
                 OdinHandler.Instance.Microphone.StartListen();
                 AddLog($"🎤 Switched to microphone: {currentMicrophone}");
@@ -152,11 +155,14 @@ public class OdinDebugUI : MonoBehaviour
             // 簡易的な音声レベル計算
             inputLevel = Mathf.Lerp(inputLevel, 0f, Time.deltaTime * 5f);
 
-            // マイクが動作中かチェック
+            // Unityのマイクが録音中かチェック
             if (Microphone.IsRecording(currentMicrophone))
             {
-                // ダミーの音声レベル表示（実際の実装では音声データから計算）
-                inputLevel = Mathf.PingPong(Time.time * 0.5f, 1f) * 0.3f;
+                // 実際の音声レベルを取得（ODINのVAD値を使用）
+                if (OdinHandler.Instance.Microphone.VadLevel > 0)
+                {
+                    inputLevel = OdinHandler.Instance.Microphone.VadLevel;
+                }
             }
         }
     }
