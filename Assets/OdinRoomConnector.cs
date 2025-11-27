@@ -10,6 +10,9 @@ public class OdinRoomConnector : MonoBehaviour
     [Header("Auto Join")]
     public bool autoJoinOnStart = true;
 
+    [Header("Debug")]
+    public bool useTestMode = false;
+
     private string AccessToken
     {
         get
@@ -32,10 +35,17 @@ public class OdinRoomConnector : MonoBehaviour
     {
         Debug.Log($"[OdinRoomConnector] Attempting to join room: {roomName}");
         Debug.Log($"[OdinRoomConnector] Using token: {(string.IsNullOrEmpty(AccessToken) ? "EMPTY" : AccessToken.Substring(0, Math.Min(10, AccessToken.Length)) + "...")}");
+        Debug.Log($"[OdinRoomConnector] Test mode: {useTestMode}");
+
+        if (useTestMode)
+        {
+            Debug.LogWarning("[OdinRoomConnector] Test mode enabled - simulating connection without ODIN");
+            return;
+        }
 
         if (string.IsNullOrEmpty(AccessToken))
         {
-            Debug.LogError("[OdinRoomConnector] Access token is empty! Please set ODIN_ACCESS_TOKEN in .env file.");
+            Debug.LogError("[OdinRoomConnector] Access token is empty! Please set ODIN_ACCESS_TOKEN in .env file or enable Test Mode.");
             return;
         }
 
@@ -48,6 +58,7 @@ public class OdinRoomConnector : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogError($"[OdinRoomConnector] Error: {e.Message}");
+            Debug.LogError("[OdinRoomConnector] Try enabling 'Use Test Mode' in Inspector for testing without valid token");
         }
     }
 
