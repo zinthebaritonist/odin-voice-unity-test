@@ -11,7 +11,7 @@ public class OdinRoomConnector : MonoBehaviour
     public bool autoJoinOnStart = true;
 
     [Header("Debug")]
-    public bool useTestMode = false;
+    public bool useTestMode = true; // デフォルトでテストモード有効
 
     private string AccessToken
     {
