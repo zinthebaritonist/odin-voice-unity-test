@@ -35,21 +35,67 @@ cd odin-voice-unity-test
 2. クローンしたフォルダを選択
 3. Unity バージョンを選択して開く
 
-#### 3. アクセストークンを設定
+#### 3. ODINアクセストークン取得と設定
 
-**方法1: .envファイルを使用（推奨）**
+ODIN音声チャットを動作させるには、**正しいJWTルームトークン**が必要です。
+
+**🔑 トークン取得手順**
+
+##### ステップ1: 4Players ODINアカウント作成
+1. https://console.4players.io/ にアクセス
+2. アカウント作成またはログイン
+3. 新しいアプリケーション作成
+
+##### ステップ2: アクセスキー生成
+1. ODIN ドキュメント: https://docs.4players.io/voice/guides/understanding-access-keys/
+2. **「ODIN Access Key Generator」**ボタンをクリック
+3. **44文字のアクセスキー**を取得（例：`Ae8I9oAIwXsVNic0x1yjt08MAVBgxz5efpRzVNoohBwo`）
+
+##### ステップ3: ルームトークン（JWT）生成
+1. プロジェクトルートで以下を実行:
+```bash
+npm install @4players/odin-tokens
+```
+
+2. `generate_token.js` ファイルを作成:
+```javascript
+const odinTokens = require("@4players/odin-tokens");
+
+const accessKey = "あなたの44文字のアクセスキー";
+const roomId = "TestRoom";
+const userId = "user123";
+
+async function generateRoomToken() {
+    try {
+        const generator = new odinTokens.TokenGenerator(accessKey);
+        const roomToken = await generator.createToken(roomId, userId);
+        console.log("Generated Room Token:");
+        console.log(roomToken);
+    } catch (error) {
+        console.error("Error:", error.message);
+    }
+}
+
+generateRoomToken();
+```
+
+3. トークン生成:
+```bash
+node generate_token.js
+```
+
+##### ステップ4: .envファイルに設定
 1. プロジェクトルートに`.env`ファイルを作成
-2. 以下の内容を記述:
-   ```
-   ODIN_ACCESS_TOKEN=あなたのトークン
-   ```
+2. 生成されたJWTトークンを設定:
+```
+ODIN_ACCESS_TOKEN=生成されたJWTトークン
+ODIN_DEFAULT_ROOM=TestRoom
+```
 
-**方法2: テストモード**
-1. Hierarchy で `OdinManager` を選択
-2. Inspector で `Use Test Mode` をチェック
-3. トークンなしでUI動作確認が可能
-
-> ⚠️ **トークン無効エラーの場合**: 現在のテスト用トークンが期限切れの可能性があります。新しいトークンが必要です。
+**⚠️ 重要な注意事項:**
+- **同じルームでテストするには、全員が同じアクセスキーから生成されたトークンを使用する必要があります**
+- **ルームトークンには有効期限があります**（通常24時間）
+- **セキュリティのため、.envファイルはGitにコミットされません**
 
 #### 4. 実行
 **Play ボタン** ▶️ を押すだけ！自動的に `TestRoom` に接続されます。
@@ -72,10 +118,21 @@ cd odin-voice-unity-test
 4. それぞれで話して相互に聞こえるか確認
 ```
 
-#### 別の PC/デバイス
-- 同じトークンを使用
-- 同じ Room Name（デフォルト: TestRoom）
-- 最大25人まで同時接続可能
+#### 別の PC/デバイスでテスト
+**🎯 重要: 全員が同じアクセスキーから生成されたトークンを使用する必要があります**
+
+1. **同じアクセスキー**を使って各PCでルームトークンを生成
+2. または**同じJWTトークン**を各PCの`.env`ファイルに設定
+3. 同じ Room Name（デフォルト: TestRoom）で接続
+4. 最大25人まで同時接続可能（フリープラン）
+
+**🔄 トークン共有方法:**
+```javascript
+// 各PCで同じアクセスキーを使用
+const accessKey = "同じ44文字のアクセスキー";
+const roomId = "TestRoom";
+const userId = "user123"; // またはユニークなID
+```
 
 ## 📁 プロジェクト構造
 
