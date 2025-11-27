@@ -178,12 +178,23 @@ public class OdinDebugUI : MonoBehaviour
 
         InitializeStyles();
 
-        // メインウィンドウ
-        float windowWidth = 450;
-        float windowHeight = 600;
+        // 画面サイズに応じてウィンドウサイズを調整
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+
+        // ウィンドウサイズを画面の90%に制限
+        float windowWidth = Mathf.Min(450, screenWidth * 0.9f);
+        float windowHeight = Mathf.Min(600, screenHeight * 0.9f);
         float padding = 10;
 
-        GUILayout.BeginArea(new Rect(padding, padding, windowWidth, windowHeight));
+        // スクロール可能なエリアとして全体をラップ
+        scrollPosition = GUI.BeginScrollView(
+            new Rect(padding, padding, windowWidth, windowHeight),
+            scrollPosition,
+            new Rect(0, 0, windowWidth - 30, windowHeight * 1.2f)
+        );
+
+        GUILayout.BeginVertical();
 
         // タイトル
         GUILayout.Box("🎤 ODIN Voice Chat Debug Panel", boxStyle, GUILayout.Width(windowWidth - 20));
@@ -293,11 +304,11 @@ public class OdinDebugUI : MonoBehaviour
         GUILayout.BeginVertical(boxStyle);
         GUILayout.Label("📋 Debug Log", labelStyle);
 
-        scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Height(200));
+        Vector2 logScrollPos = GUILayout.BeginScrollView(Vector2.zero, GUILayout.Height(150));
 
         foreach (string log in logMessages)
         {
-            GUILayout.Label(log, GUILayout.Width(400));
+            GUILayout.Label(log, GUILayout.Width(windowWidth - 50));
         }
 
         GUILayout.EndScrollView();
@@ -306,7 +317,8 @@ public class OdinDebugUI : MonoBehaviour
         // ヘルプテキスト
         GUILayout.Label("Press TAB to toggle this panel", labelStyle);
 
-        GUILayout.EndArea();
+        GUILayout.EndVertical();
+        GUI.EndScrollView();
     }
 
     void InitializeStyles()

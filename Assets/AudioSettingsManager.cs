@@ -118,11 +118,9 @@ public class AudioSettingsManager : MonoBehaviour
             AudioListener.volume = speakerVolume;
 
             // VAD設定
-            if (OdinHandler.Instance.Config != null)
-            {
-                OdinHandler.Instance.Config.VoiceActivityDetection = vadEnabled;
-                OdinHandler.Instance.Config.VoiceActivityDetectionAttackProbability = vadSensitivity * 0.2f;
-            }
+            // OdinHandler.Configは静的プロパティ
+            OdinHandler.Config.VoiceActivityDetection = vadEnabled;
+            OdinHandler.Config.VoiceActivityDetectionAttackProbability = vadSensitivity * 0.2f;
         }
 
         Debug.Log("[AudioSettings] All settings applied");
