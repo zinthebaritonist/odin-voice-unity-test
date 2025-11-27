@@ -91,8 +91,8 @@ namespace OdinVoiceChat.Core
         {
             try
             {
-                OdinHandler.Instance.OnRoomJoined.AddListener(args => HandleRoomJoined(args));
-                OdinHandler.Instance.OnRoomLeft.AddListener(args => HandleRoomLeft(args));
+                OdinHandler.Instance.OnRoomJoined.AddListener((sender, args) => HandleRoomJoined(args));
+                OdinHandler.Instance.OnRoomLeft.AddListener((sender, args) => HandleRoomLeft(args));
                 OdinHandler.Instance.OnPeerJoined.AddListener((sender, args) => HandlePeerJoined(args));
                 OdinHandler.Instance.OnPeerLeft.AddListener((sender, args) => HandlePeerLeft(args));
                 OdinHandler.Instance.OnMediaAdded.AddListener((sender, args) => HandleMediaAdded(args));
