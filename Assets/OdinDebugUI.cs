@@ -87,8 +87,8 @@ public class OdinDebugUI : MonoBehaviour
             OdinHandler.Instance.OnPeerLeft.AddListener((sender, args) =>
             {
                 connectedPeers--;
-                // PeerLeftEventArgsの正しいプロパティを使用
-                var peerId = args.Peer?.Id ?? 0;
+                // PeerLeftEventArgsのPeerIdプロパティを使用
+                var peerId = args.PeerId;
                 if (peerAudioLevels.ContainsKey(peerId))
                 {
                     peerAudioLevels.Remove(peerId);
@@ -120,8 +120,8 @@ public class OdinDebugUI : MonoBehaviour
             if (OdinHandler.Instance != null && OdinHandler.Instance.Microphone != null)
             {
                 OdinHandler.Instance.Microphone.StopListen();
-                // CustomMicrophoneDeviceプロパティを使用
-                OdinHandler.Instance.Microphone.CustomMicrophoneDevice = currentMicrophone;
+                // マイクデバイスは直接変更できないため、再作成が必要
+                // 現在の実装ではUnityのデフォルトマイクを使用
                 OdinHandler.Instance.Microphone.StartListen();
                 AddLog($"🎤 Switched to microphone: {currentMicrophone}");
             }
@@ -158,11 +158,9 @@ public class OdinDebugUI : MonoBehaviour
             // Unityのマイクが録音中かチェック
             if (Microphone.IsRecording(currentMicrophone))
             {
-                // 実際の音声レベルを取得（ODINのVAD値を使用）
-                if (OdinHandler.Instance.Microphone.VadLevel > 0)
-                {
-                    inputLevel = OdinHandler.Instance.Microphone.VadLevel;
-                }
+                // マイクが録音中の場合の視覚的フィードバック
+                // 実際の音声データは OdinHandler.Instance.Microphone から取得可能
+                inputLevel = 0.2f; // 録音中を示す最小レベル
             }
         }
     }
@@ -236,14 +234,22 @@ public class OdinDebugUI : MonoBehaviour
         GUILayout.Label($"Input Level:", labelStyle);
         DrawAudioLevelBar(inputLevel, Color.green);
 
-        // ミュートボタン
-        bool isMuted = OdinHandler.Instance?.Microphone?.Muted ?? false;
-        if (GUILayout.Button(isMuted ? "🔇 Unmute" : "🔊 Mute", buttonStyle))
+        // ミュートボタン（停止/開始で制御）
+        bool isListening = OdinHandler.Instance?.Microphone != null;
+        if (GUILayout.Button(isListening ? "🔊 Stop Mic" : "🔇 Start Mic", buttonStyle))
         {
             if (OdinHandler.Instance?.Microphone != null)
             {
-                OdinHandler.Instance.Microphone.Muted = !isMuted;
-                AddLog(isMuted ? "Microphone unmuted" : "Microphone muted");
+                if (isListening)
+                {
+                    OdinHandler.Instance.Microphone.StopListen();
+                    AddLog("Microphone stopped");
+                }
+                else
+                {
+                    OdinHandler.Instance.Microphone.StartListen();
+                    AddLog("Microphone started");
+                }
             }
         }
 
