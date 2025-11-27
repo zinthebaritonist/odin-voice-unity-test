@@ -1,7 +1,7 @@
 const odinTokens = require("@4players/odin-tokens");
 
 // アクセスキーからルームトークンを生成
-const accessKey = "あなたの44文字のアクセスキーをここに入力";
+const accessKey = "Ae8I9oAIwXsVNic0x1yjt08MAVBgxz5efpRzVNoohBwo";
 const roomId = "TestRoom";
 const userId = "user123";
 

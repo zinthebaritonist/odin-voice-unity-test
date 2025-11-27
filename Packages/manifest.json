@@ -6,7 +6,7 @@
     "com.unity.xr.interaction.toolkit": "3.3.0",
     "com.unity.xr.oculus": "4.5.2",
     "com.unity.xr.openxr": "1.16.0",
-    "io.fourplayers.odin": "file:/Users/zin/Downloads/odin-v1.7.4_tarballpackage.tgz",
+    "io.fourplayers.odin": "https://github.com/4Players/odin-unity-fmod/releases/download/v1.7.4/io.fourplayers.odin-1.7.4.tgz",
     "com.unity.modules.androidjni": "1.0.0"
   },
   "scopedRegistries": []
