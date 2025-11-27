@@ -30,6 +30,7 @@ public class OdinRoomConnector : MonoBehaviour
     public void JoinRoom()
     {
         Debug.Log($"[OdinRoomConnector] Attempting to join room: {roomName}");
+        Debug.Log($"[OdinRoomConnector] Using token: {(string.IsNullOrEmpty(AccessToken) ? "EMPTY" : AccessToken.Substring(0, Math.Min(10, AccessToken.Length)) + "...")}");
 
         if (string.IsNullOrEmpty(AccessToken))
         {
