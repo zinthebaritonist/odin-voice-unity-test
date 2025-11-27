@@ -5,7 +5,7 @@ public class OdinRoomConnector : MonoBehaviour
 {
     [Header("Room Settings")]
     public string roomName = "TestRoom";
-    public string accessToken = ""; // トークンは別途提供されます
+    public string accessToken = "WzXiMkqgXJf0wsjLmBaITsB3kMXQZnoL9HwG2XQC79e98193"; // デフォルトのテスト用トークン
 
     [Header("Auto Join")]
     public bool autoJoinOnStart = true;
@@ -23,6 +23,12 @@ public class OdinRoomConnector : MonoBehaviour
     public void JoinRoom()
     {
         Debug.Log($"[OdinRoomConnector] Attempting to join room: {roomName}");
+
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            Debug.LogError("[OdinRoomConnector] Access token is empty! Please set the access token in the Inspector.");
+            return;
+        }
 
         try
         {
