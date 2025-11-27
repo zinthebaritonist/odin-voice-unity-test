@@ -5,7 +5,7 @@ public class OdinRoomConnector : MonoBehaviour
 {
     [Header("Room Settings")]
     public string roomName = "TestRoom";
-    public string accessToken = "WzXiMkqgXJf0wsjLmBaITsB3kMXQZnoL9HwG2XQC79e98193";
+    public string accessToken = ""; // トークンは別途提供されます
 
     [Header("Auto Join")]
     public bool autoJoinOnStart = true;

@@ -9,7 +9,7 @@ namespace OdinVoiceChat.Core
     public class SimpleOdinManager : MonoBehaviour
     {
         [Header("ODIN Settings")]
-        [SerializeField] private string accessToken = "WzXiMkqgXJf0wsjLmBaITsB3kMXQZnoL9HwG2XQC79e98193";
+        [SerializeField] private string accessToken = ""; // トークンは別途提供されます
         [SerializeField] private string roomName = "TestRoom";
         [SerializeField] private bool autoJoin = true;
 
