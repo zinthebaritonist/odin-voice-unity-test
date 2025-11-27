@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@4players/odin-tokens": "^2.2.0"
+  }
+}
