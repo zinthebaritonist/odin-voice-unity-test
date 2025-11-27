@@ -187,12 +187,27 @@ Inspector で `OdinRoomConnector` を選択：
 
 ### プラットフォーム別ビルド
 
+#### ビルド版での音声設定
+ビルドしたアプリでも以下の機能が利用可能：
+- **TABキー**: デバッグUI表示（マイク選択、音量調整）
+- **設定の自動保存**: PlayerPrefsに保存され次回起動時に復元
+- **ランタイム設定変更**: アプリ実行中に設定変更可能
+
 #### Windows/Mac
 ```
 File → Build Settings
 → PC, Mac & Linux Standalone
+→ Player Settings:
+  - Fullscreen Mode: Windowed (ウィンドウモード推奨)
+  - Microphone Usage Description: 入力済み
 → Build and Run
 ```
+
+**ビルド後の操作:**
+1. アプリを起動
+2. TABキーでデバッグパネル表示
+3. マイク/スピーカー設定を調整
+4. 設定は自動保存される
 
 #### Quest 2/3
 ```
@@ -202,6 +217,7 @@ File → Build Settings
 → Player Settings で以下を確認:
   - XR Settings → Oculus
   - Minimum API Level: 29
+  - Microphone Permission: 有効
 → Build and Run
 ```
 

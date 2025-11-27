@@ -116,14 +116,21 @@ public class OdinDebugUI : MonoBehaviour
             selectedMicrophoneIndex = index;
             currentMicrophone = availableMicrophones[index];
 
-            // ODINのマイクを変更
-            if (OdinHandler.Instance != null && OdinHandler.Instance.Microphone != null)
+            // AudioSettingsManagerを使用して設定を適用・保存
+            if (AudioSettingsManager.Instance != null)
             {
-                OdinHandler.Instance.Microphone.StopListen();
-                // マイクデバイスは直接変更できないため、再作成が必要
-                // 現在の実装ではUnityのデフォルトマイクを使用
-                OdinHandler.Instance.Microphone.StartListen();
-                AddLog($"🎤 Switched to microphone: {currentMicrophone}");
+                AudioSettingsManager.Instance.SetMicrophone(index);
+                AddLog($"🎤 Switched to microphone: {currentMicrophone} (saved)");
+            }
+            else
+            {
+                // フォールバック処理
+                if (OdinHandler.Instance != null && OdinHandler.Instance.Microphone != null)
+                {
+                    OdinHandler.Instance.Microphone.StopListen();
+                    OdinHandler.Instance.Microphone.StartListen();
+                    AddLog($"🎤 Switched to microphone: {currentMicrophone}");
+                }
             }
         }
     }
@@ -233,6 +240,18 @@ public class OdinDebugUI : MonoBehaviour
         // 音声レベルインジケーター
         GUILayout.Label($"Input Level:", labelStyle);
         DrawAudioLevelBar(inputLevel, Color.green);
+
+        // ボリューム調整スライダー（ビルド版用）
+        GUILayout.Label($"Speaker Volume: {(int)(AudioListener.volume * 100)}%", labelStyle);
+        float newVolume = GUILayout.HorizontalSlider(AudioListener.volume, 0f, 1f);
+        if (Mathf.Abs(newVolume - AudioListener.volume) > 0.01f)
+        {
+            AudioListener.volume = newVolume;
+            if (AudioSettingsManager.Instance != null)
+            {
+                AudioSettingsManager.Instance.SetSpeakerVolume(newVolume);
+            }
+        }
 
         // ミュートボタン（停止/開始で制御）
         bool isListening = OdinHandler.Instance?.Microphone != null;
