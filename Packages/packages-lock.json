@@ -94,10 +94,11 @@
       "url": "https://packages.unity.com"
     },
     "io.fourplayers.odin": {
-      "version": "file:/Users/zin/Downloads/odin-v1.7.4_tarballpackage.tgz",
+      "version": "https://github.com/4Players/odin-sdk-unity.git",
       "depth": 0,
-      "source": "local-tarball",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "200ad9988e9b4f5776695ffd834804e63c15a9e3"
     },
     "com.unity.modules.androidjni": {
       "version": "1.0.0",
