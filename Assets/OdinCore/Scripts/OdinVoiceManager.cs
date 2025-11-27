@@ -32,10 +32,10 @@ namespace OdinVoiceChat.Core
 
         [Header("ODIN Configuration")]
         [SerializeField] private string accessToken = "";
-        [SerializeField] private string gateway = "gateway.odin.4players.io";
         #pragma warning disable CS0414
-        [SerializeField] private bool useGateway = false;
+        [SerializeField] private string gateway = "gateway.odin.4players.io";
         #pragma warning restore CS0414
+        [SerializeField] private bool useGateway = false;
         [SerializeField] private string roomName = "ChorusRoom";
         [SerializeField] private bool autoJoinRoom = true;
 
